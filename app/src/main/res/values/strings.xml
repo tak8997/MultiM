@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MultiMemoApplication</string>
+    <string name="new_memo">새 메모</string>
+    <string name="text_writing">텍스트</string>
+    <string name="hand_writing">손글씨</string>
+</resources>
