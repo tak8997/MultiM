@@ -9,30 +9,20 @@ import java.util.Date;
  */
 
 public class MemoList {
-    int image;
-    Date curDate;
-    String memo;
+    private String curDate;
+    private String memo;
 
-    public MemoList(int image, Date curDate,String memo) {
+    public MemoList(String curDate, String memo) {
         this.curDate = curDate;
-        this.image = image;
         this.memo = memo;
     }
 
-    public Date getCurDate() {
+    public String getCurDate() {
         return curDate;
     }
 
-    public void setCurDate(Date curDate) {
+    public void setCurDate(String curDate) {
         this.curDate = curDate;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
     }
 
     public String getMemo() {

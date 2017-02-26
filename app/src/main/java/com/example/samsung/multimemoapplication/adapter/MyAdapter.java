@@ -8,20 +8,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.samsung.multimemoapplication.R;
+import com.example.samsung.multimemoapplication.common.BasicInfo;
 import com.example.samsung.multimemoapplication.model.MemoList;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by SAMSUNG on 2017-01-15.
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private ArrayList<MemoList> mItems;
+    private List<MemoList> mItems;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<MemoList> items) {
+    public MyAdapter(List<MemoList> items) {
         mItems = items;
     }
 
@@ -30,14 +33,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public ImageView image;
         public TextView date;
         public TextView memo;
 
 
         public ViewHolder(View v) {
             super(v);
-            image = (ImageView) v.findViewById(R.id.image);
             date = (TextView) v.findViewById(R.id.date);
             memo = (TextView) v.findViewById(R.id.memo);
         }
@@ -56,11 +57,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
-        Date curDate = mItems.get(position).getCurDate();
-        String curretnTimeString = new SimpleDateFormat("HH:mm:ss").format(curDate);
-
-        holder.image.setImageResource(mItems.get(position).getImage());
-        holder.date.setText(curretnTimeString);
+        Date date = new Date();
+        String insertDate = BasicInfo.dateDayFormat.format(date);
+        
+        holder.date.setText(insertDate);
         holder.memo.setText(mItems.get(position).getMemo());
     }
 

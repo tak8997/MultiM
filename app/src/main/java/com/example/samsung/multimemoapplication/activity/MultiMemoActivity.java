@@ -6,20 +6,27 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.samsung.multimemoapplication.R;
 import com.example.samsung.multimemoapplication.adapter.MyAdapter;
+import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
 import com.example.samsung.multimemoapplication.model.MemoList;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by SAMSUNG on 2017-01-15.
  */
 
-public class MultiMemoActivity extends AppCompatActivity{
+public class MultiMemoActivity extends AppCompatActivity {
+    public static final String TAG = "MultiMemoActivity";
+
+    public static MultiMemoDBHelper multiMemoDBHelper;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -38,14 +45,6 @@ public class MultiMemoActivity extends AppCompatActivity{
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // 메모 삽입
-        ArrayList<MemoList> items = new ArrayList<>();
-        items.add(new MemoList(R.drawable.mini, new Date(), "first recycler view"));
-
-        mAdapter = new MyAdapter(items);
-        mAdapter.notifyDataSetChanged();
-        mRecyclerView.setAdapter(mAdapter);
-
         // 새 매모 버튼
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,5 +54,66 @@ public class MultiMemoActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+    }
+
+    public void onStart() {
+        super.onStart();
+        Log.d("onStart", "Memo database is loaded, opened");
+
+        openDatabases();
+        loadMemoList();
+    }
+
+    public void onResume() {
+        super.onResume();
+        Log.d("onResume", "Memo database is reloaded");
+
+        loadMemoList();
+    }
+
+    private void loadMemoList() {
+        multiMemoDBHelper = MultiMemoDBHelper.getInstance();
+        List<MemoList> memoLists = multiMemoDBHelper.getAllMemoLists();
+
+        mAdapter = new MyAdapter(memoLists);
+        mAdapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void openDatabases() {
+        multiMemoDBHelper = MultiMemoDBHelper.getInstance();
+        if(multiMemoDBHelper != null)
+            Log.d(TAG, "Memo database is open.");
+        else
+            Log.d(TAG, "Memo database is not open.");
+    }
+
+    private void logOut() {
+        Intent intent = new Intent(MultiMemoActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            logOut();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

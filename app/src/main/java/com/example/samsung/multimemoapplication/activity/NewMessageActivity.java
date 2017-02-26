@@ -8,17 +8,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.samsung.multimemoapplication.R;
-import com.example.samsung.multimemoapplication.database.MultiMemoDB;
+import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
+import com.example.samsung.multimemoapplication.model.MemoList;
+
+import java.util.Date;
 
 /**
  * Created by SAMSUNG on 2017-01-17.
  */
 public class NewMessageActivity extends AppCompatActivity{
-    private MultiMemoDB database;
-
     private Button textBtn;
     private Button handBtn;
-    private EditText text;
+    private EditText text = null;
 
     private Button saveBtn;
     private Button closeBtn;
@@ -29,8 +30,9 @@ public class NewMessageActivity extends AppCompatActivity{
         setContentView(R.layout.activity_new_message);
 
         textBtn = (Button) findViewById(R.id.text_writing_btn);
-        handBtn = (Button) findViewById(R.id.hand_writing_btn);
         text = (EditText) findViewById(R.id.text);
+        saveBtn = (Button) findViewById(R.id.save);
+        closeBtn = (Button) findViewById(R.id.close);
 
         textBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,12 +44,18 @@ public class NewMessageActivity extends AppCompatActivity{
             }
         });
 
-        handBtn.setOnClickListener(new View.OnClickListener() {
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(NewMessageActivity.this, "handBtn", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                Date date = new Date();
+                String memo = text.getText().toString();
 
-                text.setFocusable(false);
+                MemoList memoList = new MemoList(date.toString(), memo);
+
+                MultiMemoDBHelper.getInstance().addMemo(memoList);
+
+                Toast.makeText(NewMessageActivity.this, "Success?", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
