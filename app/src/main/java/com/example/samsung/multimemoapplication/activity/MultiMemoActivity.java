@@ -39,7 +39,9 @@ public class MultiMemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_multi_memo);
         
         init();
+    }
 
+    private void init() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,9 +62,6 @@ public class MultiMemoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void init() {
     }
 
     public void onStart() {
