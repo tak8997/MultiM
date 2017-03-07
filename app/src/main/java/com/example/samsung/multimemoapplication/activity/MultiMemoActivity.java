@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,9 @@ public class MultiMemoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_memo);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // recycler view 세팅
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -91,7 +95,6 @@ public class MultiMemoActivity extends AppCompatActivity {
     private void logOut() {
         Intent intent = new Intent(MultiMemoActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();
     }
 
     @Override

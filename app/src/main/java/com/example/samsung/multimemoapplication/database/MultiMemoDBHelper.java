@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.samsung.multimemoapplication.MyApplication;
+import com.example.samsung.multimemoapplication.common.MyApplication;
 import com.example.samsung.multimemoapplication.model.MemoList;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
         // 테이블 생성
         String CREATE_SQL =
             "CREATE TABLE " + MEMO_TABLE + " (" +
-                    _ID + " INTEGER PRIMARY KEY, " +
+                    _ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                     MEMO_CREATE_DATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                     MEMO_CONTENT_TEXT + " TEXT DEFAULT ' ' " +
                     ")";
@@ -93,70 +93,70 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-        // Getting single memo
-//        Contact getContact(int id) {
-//            SQLiteDatabase db = this.getReadableDatabase();
-//
-//            Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,
-//                            KEY_NAME, KEY_PH_NO }, KEY_ID + "=?",
-//                    new String[] { String.valueOf(id) }, null, null, null, null);
-//            if (cursor != null)
-//                cursor.moveToFirst();
-//
-//            Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-//                    cursor.getString(1), cursor.getString(2));
-//            // return contact
-//            return contact;
-//        }
-//
-        // Getting All Contacts
-        public List<MemoList> getAllMemoLists() {
-            List<MemoList> memoLists = new ArrayList<MemoList>();
-            // Select All Query
-            String selectQuery = "SELECT * FROM " + MEMO_TABLE;
+    // Getting single memo
+    public MemoList getContact(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
-            SQLiteDatabase db = getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.query(MEMO_TABLE, new String[] { _ID,
+                        MEMO_CREATE_DATE, MEMO_CONTENT_TEXT }, _ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
 
-            // looping through all rows and adding to list
-            if (cursor.moveToFirst()) {
-                do {
-                    int id = Integer.parseInt(cursor.getString(0));
-                    String date = cursor.getString(1);
-                    String memo = cursor.getString(2);
+        MemoList memoList = new MemoList(Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1), cursor.getString(2));
+        // return contact
+        return memoList;
+    }
 
-                    MemoList memoList = new MemoList(date, memo);
-                    // Adding contact to list
-                    memoLists.add(memoList);
-                } while (cursor.moveToNext());
-            }
+    // Getting All Memos
+    public List<MemoList> getAllMemoLists() {
+        List<MemoList> memoLists = new ArrayList<MemoList>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + MEMO_TABLE;
 
-            // return contact list
-            return memoLists;
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                int id = Integer.parseInt(cursor.getString(0));
+                String date = cursor.getString(1);
+                String memo = cursor.getString(2);
+
+                MemoList memoList = new MemoList(id, date, memo);
+                // Adding contact to list
+                memoLists.add(memoList);
+            } while (cursor.moveToNext());
         }
-//
-//        // Updating single contact
-//        public int updateContact(Contact contact) {
-//            SQLiteDatabase db = this.getWritableDatabase();
-//
-//            ContentValues values = new ContentValues();
-//            values.put(KEY_NAME, contact.getName());
-//            values.put(KEY_PH_NO, contact.getPhoneNumber());
-//
-//            // updating row
-//            return db.update(TABLE_CONTACTS, values, KEY_ID + " = ?",
-//                    new String[] { String.valueOf(contact.getID()) });
-//        }
-//
-//        // Deleting single contact
-//        public void deleteContact(Contact contact) {
-//            SQLiteDatabase db = this.getWritableDatabase();
-//            db.delete(TABLE_CONTACTS, KEY_ID + " = ?",
-//                    new String[] { String.valueOf(contact.getID()) });
-//            db.close();
-//        }
-//
-//
+
+        // return memo list
+        return memoLists;
+    }
+
+        // Updating single memo
+        public int updateMemo(MemoList memoList) {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(MEMO_CREATE_DATE, memoList.getCurDate());
+            values.put(MEMO_CONTENT_TEXT, memoList.getMemo());
+
+            // updating row
+            return db.update(MEMO_TABLE, values, _ID + " = ?",
+                    new String[] { String.valueOf(memoList.getId()) });
+        }
+
+        // Deleting single memo
+        public void deleteMemo(MemoList memoList) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(MEMO_TABLE, _ID + " = ?",
+                    new String[] { String.valueOf(memoList.getId()) });
+            db.close();
+        }
+
+
 //        // Getting contacts Count
 //        public int getContactsCount() {
 //            String countQuery = "SELECT  * FROM " + TABLE_CONTACTS;

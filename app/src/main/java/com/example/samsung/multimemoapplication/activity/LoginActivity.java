@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.example.samsung.multimemoapplication.R;
 import com.example.samsung.multimemoapplication.manager.PropertyManager;
 
+import java.io.File;
+
 /**
  * Created by Tak on 2017. 2. 21..
  */
@@ -39,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch(v.getId()){
+            switch (v.getId()) {
                 case R.id.signIn:
                     signInWithEmailPassword();
                     break;
@@ -86,11 +88,16 @@ public class LoginActivity extends AppCompatActivity {
             userPassword.setError(null);
         }
 
-        if(id != PropertyManager.getInstance().getId() || password != PropertyManager.getInstance().getPassword()) {
+        if (id != PropertyManager.getInstance().getId() || password != PropertyManager.getInstance().getPassword()) {
             Toast.makeText(this, "Please check your Account", Toast.LENGTH_SHORT).show();
             valid = false;
         }
 
         return valid;
+    }
+
+    @Override
+    public File[] getExternalCacheDirs() {
+        return super.getExternalCacheDirs();
     }
 }

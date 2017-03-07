@@ -1,4 +1,4 @@
-package com.example.samsung.multimemoapplication;
+package com.example.samsung.multimemoapplication.common;
 
 import android.app.Application;
 import android.content.Context;

@@ -3,7 +3,7 @@ package com.example.samsung.multimemoapplication.manager;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.samsung.multimemoapplication.MyApplication;
+import com.example.samsung.multimemoapplication.common.MyApplication;
 import com.example.samsung.multimemoapplication.model.User;
 
 /**
