@@ -29,6 +29,10 @@ public class NewMessageActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_message);
 
+        init();
+    }
+
+    private void init() {
         textBtn = (Button) findViewById(R.id.text_writing_btn);
         text = (EditText) findViewById(R.id.text);
         saveBtn = (Button) findViewById(R.id.save);
@@ -59,8 +63,6 @@ public class NewMessageActivity extends AppCompatActivity{
             }
         });
     }
-
-
 
 
 }
