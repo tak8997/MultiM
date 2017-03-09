@@ -52,24 +52,12 @@ public class MultiMemoActivity extends AppCompatActivity {
     private void init() {
         ButterKnife.bind(this);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        
-        // recycler view 세팅
-//        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
+        // recycler view 세팅, use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        
-//        fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-        
-//            }
-//        });
     }
 
     // 새 매모 버튼
