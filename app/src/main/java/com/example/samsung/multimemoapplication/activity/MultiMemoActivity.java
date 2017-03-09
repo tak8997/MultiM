@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by SAMSUNG on 2017-01-15.
@@ -33,7 +34,7 @@ public class MultiMemoActivity extends AppCompatActivity {
 
     @BindView(R.id.my_recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fab) FloatingActionButton fab;
+//    @BindView(R.id.fab) FloatingActionButton fab;
 
 //    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -61,16 +62,22 @@ public class MultiMemoActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // 새 매모 버튼
+        
 //        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MultiMemoActivity.this, NewMessageActivity.class);
-                startActivity(intent);
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MultiMemoActivity.this, NewMessageActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+    }
+
+    // 새 매모 버튼
+    @OnClick(R.id.fab)
+    public void onClick() {
+        Intent intent = new Intent(MultiMemoActivity.this, NewMessageActivity.class);
+        startActivity(intent);
     }
 
     public void onStart() {
