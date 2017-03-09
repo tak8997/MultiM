@@ -29,20 +29,21 @@ public class SplashActivity extends AppCompatActivity{
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                final String id = PropertyManager.getInstance().getId();
+                final String email = PropertyManager.getInstance().getId();
 
                 //로그인 되어있을 경우
-                if(!id.equals("")) {
+                if(!email.equals("")) {
                     final String password = PropertyManager.getInstance().getPassword();
-                    PropertyManager.getInstance().getAuthWithIdPassword(id, password, new PropertyManager.OnResultListener<User>() {
+
+                    // TODO: db관련으로 바꿔야함.
+                    PropertyManager.getInstance().getAuthWithIdPassword(email, password, new PropertyManager.OnResultListener<User>() {
                         @Override
                         public void onSuccess(User result) {
-                            if(result != null) {
-                                Toast.makeText(SplashActivity.this, id + ", " + password + "", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SplashActivity.this, MultiMemoActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                            Toast.makeText(SplashActivity.this, email + ", " + password + "", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(SplashActivity.this, MultiMemoActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                         @Override

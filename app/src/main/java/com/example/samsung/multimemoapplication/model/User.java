@@ -5,19 +5,34 @@ package com.example.samsung.multimemoapplication.model;
  */
 
 public class User {
-    private String id;
+    private int id;
+    private String email;
     private String password;
 
-    public User(String id, String password) {
+    public User(int id, String email, String password) {
         this.id = id;
+        this.email = email;
         this.password = password;
     }
 
-    public String getId() {
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

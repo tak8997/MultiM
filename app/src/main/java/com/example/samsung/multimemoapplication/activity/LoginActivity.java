@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,31 +12,56 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.samsung.multimemoapplication.R;
+import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
 import com.example.samsung.multimemoapplication.manager.PropertyManager;
+import com.example.samsung.multimemoapplication.model.User;
 
 import java.io.File;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Tak on 2017. 2. 21..
  */
 public class LoginActivity extends AppCompatActivity {
-    private EditText userID;
-    private EditText userPassword;
-    private Button signIn;
-    private TextView signUp;
+    private static final String TAG = "LoginActivity";
+
+    private static MultiMemoDBHelper multiMemoDBHelper;
+
+    @BindView(R.id.userEmail) EditText userEmail;
+    @BindView(R.id.userPassword) EditText userPassword;
+    @BindView(R.id.signIn) Button signInBtn;
+    @BindView(R.id.signUp) Button signUpBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userID = (EditText) findViewById(R.id.userID);
-        userPassword = (EditText) findViewById(R.id.userPassword);
-        signIn = (Button) findViewById(R.id.signIn);
-        signUp = (TextView) findViewById(R.id.signUp);
+        init();
+    }
 
-        signIn.setOnClickListener(listener);
-        signUp.setOnClickListener(listener);
+    private void init() {
+        ButterKnife.bind(this);
+
+        signInBtn.setOnClickListener(listener);
+        signUpBtn.setOnClickListener(listener);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        openDatabases();
+    }
+
+    private void openDatabases() {
+        multiMemoDBHelper = MultiMemoDBHelper.getInstance();
+        if(multiMemoDBHelper != null)
+            Log.d(TAG, "Memo database is open.");
+        else
+            Log.d(TAG, "Memo database is not open.");
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {
@@ -71,14 +97,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateUserAccount() {
         Boolean valid = true;
-        String id = userID.getText().toString();
+        String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
 
-        if (id.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(id).matches()) {
-            userID.setError("enter a valid email address");
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            userEmail.setError("enter a valid email address");
             valid = false;
         } else {
-            userID.setError(null);
+            userEmail.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
@@ -88,12 +114,20 @@ public class LoginActivity extends AppCompatActivity {
             userPassword.setError(null);
         }
 
-        if (id != PropertyManager.getInstance().getId() || password != PropertyManager.getInstance().getPassword()) {
-            Toast.makeText(this, "Please check your Account", Toast.LENGTH_SHORT).show();
+        if(!checkUserWithDB(email)) {
             valid = false;
         }
 
         return valid;
+    }
+
+    private boolean checkUserWithDB(String email) {
+        User user = multiMemoDBHelper.getUser(email);
+
+        if(user != null)
+            return true;
+
+        return false;
     }
 
     @Override
