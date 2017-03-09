@@ -67,8 +67,7 @@ public class MultiMemoActivity extends AppCompatActivity {
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Intent intent = new Intent(MultiMemoActivity.this, NewMessageActivity.class);
-//                startActivity(intent);
+        
 //            }
 //        });
     }
