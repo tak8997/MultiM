@@ -34,12 +34,9 @@ public class MultiMemoActivity extends AppCompatActivity {
 
     @BindView(R.id.my_recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
-//    @BindView(R.id.fab) FloatingActionButton fab;
-
-//    private RecyclerView mRecyclerView;
+    
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-//    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
