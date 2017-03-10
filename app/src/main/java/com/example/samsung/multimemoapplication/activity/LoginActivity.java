@@ -20,6 +20,7 @@ import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Tak on 2017. 2. 21..
@@ -31,8 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.userEmail) EditText userEmail;
     @BindView(R.id.userPassword) EditText userPassword;
-    @BindView(R.id.signIn) Button signInBtn;
-    @BindView(R.id.signUp) Button signUpBtn;
+//    @BindView(R.id.signIn) Button signInBtn;
+//    @BindView(R.id.signUp) Button signUpBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init() {
         ButterKnife.bind(this);
+    }
 
-        signInBtn.setOnClickListener(listener);
-        signUpBtn.setOnClickListener(listener);
+    @OnClick({R.id.signIn, R.id.signUp})
+    public void onSignClicked(View v) {
+        switch (v.getId()) {
+            case R.id.signIn:
+                signInWithEmailPassword();
+                break;
+            case R.id.signUp:
+                signUpWithEmailPassword();
+                break;
+        }
     }
 
     @Override
@@ -64,31 +74,35 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG, "Memo database is not open.");
     }
 
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.signIn:
-                    signInWithEmailPassword();
-                    break;
-                case R.id.signUp:
-                    signUpWithEmailPassword();
-                    break;
-            }
-        }
-    };
+//    private View.OnClickListener listener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            switch (v.getId()) {
+//                case R.id.signIn:
+//                    signInWithEmailPassword();
+//                    break;
+//                case R.id.signUp:
+//                    signUpWithEmailPassword();
+//                    break;
+//            }
+//        }
+//    };
 
+    // 로그인
     private void signInWithEmailPassword() {
         if (!validateUserAccount()) {
             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
             return;
         }
+        PropertyManager.getInstance().setId(userEmail.getText().toString());
+        PropertyManager.getInstance().setPassword(userPassword.getText().toString());
 
         Intent intent = new Intent(LoginActivity.this, MultiMemoActivity.class);
         startActivity(intent);
         finish();
     }
 
+    // 회원가입
     private void signUpWithEmailPassword() {
         Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
