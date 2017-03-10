@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
             return;
         }
-        PropertyManager.getInstance().setId(userEmail.getText().toString());
+        PropertyManager.getInstance().setEmail(userEmail.getText().toString());
         PropertyManager.getInstance().setPassword(userPassword.getText().toString());
 
         Intent intent = new Intent(LoginActivity.this, MultiMemoActivity.class);
@@ -129,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if(!checkUserWithDB(email)) {
+            Toast.makeText(this, "User not exist", Toast.LENGTH_SHORT).show();
             valid = false;
         }
 

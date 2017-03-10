@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.example.samsung.multimemoapplication.common.MyApplication;
@@ -35,6 +36,7 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
     */
     // 공통
     private static final String _ID = "id";
+    private static final String USER_ID = "id";
 
     // 메모 테이블 컬럼
     private static final String MEMO_CONTENT_TEXT = "content_text";
@@ -58,6 +60,7 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("DBHelper", "onCreate");
         /*
         ** MEMO_TABLE
         */
@@ -77,8 +80,8 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
         // 테이블 생성
         CREATE_SQL =
                 "CREATE TABLE " + USER_ACCOUNT_TABLE + " (" +
-                        _ID + " INTEGER NOT NNULL PRIMARY KEY AUTOINCREMENT, " +
-                        USER_EMAIL + " TEXT " +
+                        USER_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                        USER_EMAIL + " TEXT, " +
                         USER_PASSWORD + " TEXT " +
                         ")";
         db.execSQL(CREATE_SQL);
@@ -87,6 +90,7 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d("DBHelper", "onUpgrade");
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
 
@@ -216,7 +220,7 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
     }
 
     public void deleteUser(User user) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(USER_ACCOUNT_TABLE, _ID + "=?",
                 new String[]{String.valueOf(user.getId())}) ;
@@ -225,9 +229,13 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
 
     // getting single user
     public User getUser(String email) {
-        SQLiteDatabase db = getWritableDatabase();
+        Log.d("DBHelper", "getUser");
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.query(USER_ACCOUNT_TABLE, null, USER_EMAIL + "=?", new String[]{email}, null, null, null);
+        String query = "SELECT * FROM " + USER_ACCOUNT_TABLE + " WHERE " + USER_EMAIL + " =?";
+        String[]  selectionArgs = new String[]{email};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+//        Cursor cursor = db.query(USER_ACCOUNT_TABLE, null, USER_EMAIL + "=? ", new String[]{email}, null, null, null);
 
         // user email Not Exist
         if(cursor.getCount()<1) {

@@ -50,7 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        PropertyManager.getInstance().setId(id);
+        PropertyManager.getInstance().setEmail(id);
         PropertyManager.getInstance().setPassword(password);
 
         Toast.makeText(this, "Sign Up Success", Toast.LENGTH_SHORT).show();
