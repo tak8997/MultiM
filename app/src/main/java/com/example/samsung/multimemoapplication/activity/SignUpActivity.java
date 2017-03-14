@@ -37,21 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void init() {
         ButterKnife.bind(this);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        operDatabases();
-    }
-
-    private void operDatabases() {
         dbManagger = DBManagger.getInstance();
-        if(dbManagger != null)
-            Log.d(TAG, "Memo database is open.");
-        else
-            Log.d(TAG, "Memo database is not open.");
     }
 
     @OnClick(R.id.signUp)
@@ -65,7 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
         String name = userName.getText().toString();
 
         if(!validateUserAccount(name, email, password)) {
-            Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "SignUp Failed", Toast.LENGTH_SHORT).show();
             return;
         }
 

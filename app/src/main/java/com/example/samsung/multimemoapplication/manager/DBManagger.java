@@ -208,6 +208,7 @@ public final class DBManagger extends SQLiteOpenHelper {
 
     public void insertUser(String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.d("insertUser", "success");
 
         ContentValues newValues = new ContentValues();
         // Assign values for each row.

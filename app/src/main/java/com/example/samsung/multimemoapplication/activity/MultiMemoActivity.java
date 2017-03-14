@@ -47,6 +47,7 @@ public class MultiMemoActivity extends AppCompatActivity {
 
     private void init() {
         ButterKnife.bind(this);
+        dbManagger = DBManagger.getInstance();
 
         setSupportActionBar(toolbar);
 
@@ -65,9 +66,8 @@ public class MultiMemoActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
-        Log.d("onStart", "Memo database is loaded, opened");
+        Log.d("onStart", "Memo database is loaded");
 
-        openDatabases();
         loadMemoList();
     }
 
@@ -85,14 +85,6 @@ public class MultiMemoActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(memoLists);
         mAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    private void openDatabases() {
-        dbManagger = DBManagger.getInstance();
-        if(dbManagger != null)
-            Log.d(TAG, "Memo database is open.");
-        else
-            Log.d(TAG, "Memo database is not open.");
     }
 
     private void logOut() {

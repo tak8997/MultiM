@@ -30,6 +30,10 @@ public class SplashActivity extends AppCompatActivity{
     }
 
     private void init() {
+        openDatabases();
+    }
+
+    private void openDatabases() {
         dbManagger = DBManagger.getInstance();
         if(dbManagger != null)
             Log.d(TAG, "Memo database is open.");

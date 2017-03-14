@@ -13,16 +13,19 @@ import com.example.samsung.multimemoapplication.model.MemoList;
 
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by SAMSUNG on 2017-01-17.
  */
 public class NewMessageActivity extends AppCompatActivity{
-    private Button textBtn;
-    private Button handBtn;
-    private EditText text = null;
+    private static final String TAG = "NewMessageActivity";
 
-    private Button saveBtn;
-    private Button closeBtn;
+    private static DBManagger dbManagger;
+
+    @BindView(R.id.text) EditText text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,36 +36,48 @@ public class NewMessageActivity extends AppCompatActivity{
     }
 
     private void init() {
-        textBtn = (Button) findViewById(R.id.text_writing_btn);
-        text = (EditText) findViewById(R.id.text);
-        saveBtn = (Button) findViewById(R.id.save);
-        closeBtn = (Button) findViewById(R.id.close);
-
-        textBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(NewMessageActivity.this, "textBtn", Toast.LENGTH_SHORT).show();
-
-                text.requestFocus();
-                text.setFocusableInTouchMode(true);
-            }
-        });
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date date = new Date();
-                String memo = text.getText().toString();
-
-                MemoList memoList = new MemoList(date.toString(), memo);
-
-                DBManagger.getInstance().addMemo(memoList);
-
-                Toast.makeText(NewMessageActivity.this, "Success?", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
+        ButterKnife.bind(this);
+        dbManagger = DBManagger.getInstance();
     }
 
+    @OnClick({R.id.save, R.id.close, R.id.text})
+    public void messageClicked(View v) {
+        switch (v.getId()) {
+            case R.id.save:
+                saveMemo();
+                break;
+            case R.id.close:
+                closeMemo();
+                break;
+            case R.id.text:
+                focusMemo();
+                break;
+        }
+    }
+
+    private void focusMemo() {
+        text.requestFocus();
+        text.setFocusableInTouchMode(true);
+    }
+
+    private void closeMemo() {
+        finish();
+    }
+
+    private void saveMemo() {
+        Date date = new Date();
+        String memo = text.getText().toString();
+
+        if(!memo.equals("")) {
+            MemoList memoList = new MemoList(date.toString(), memo);
+
+            dbManagger.addMemo(memoList);
+
+            finish();
+        } else {
+            focusMemo();
+            Toast.makeText(this, "Text is Empty!!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

@@ -11,84 +11,18 @@
         android:layout_height="wrap_content"
         android:text="@string/new_memo"
         android:textSize="30dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="20dp"
         android:gravity="center_horizontal"/>
 
-    <LinearLayout
-        android:id="@+id/contents_memo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/new_memo">
-        <ImageView
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/person_add"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_video"/>
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_voice"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/writing_memo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:layout_below="@+id/contents_memo">
-        <EditText
-            android:id="@+id/text"
-            android:layout_width="300dp"
-            android:layout_height="139dp"
-            android:layout_marginTop="2dp"
-            android:background="#ececec"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <Button
-                android:id="@+id/text_writing_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_writing"/>
-            <Button
-                android:id="@+id/hand_writing_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hand_writing"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_below="@+id/writing_memo">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="알람:"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="날짜"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="시간"/>
-    </LinearLayout>
+    <EditText
+        android:id="@+id/text"
+        android:layout_below="@+id/new_memo"
+        android:layout_width="500dp"
+        android:layout_height="300dp"
+        android:gravity="top"
+        android:layout_marginTop="30dp"
+        android:background="#e4e4e4"/>
 
     <LinearLayout
         android:layout_width="match_parent"

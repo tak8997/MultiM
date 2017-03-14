@@ -29,8 +29,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.userEmail) EditText userEmail;
     @BindView(R.id.userPassword) EditText userPassword;
-//    @BindView(R.id.signIn) Button signInBtn;
-//    @BindView(R.id.signUp) Button signUpBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init() {
         ButterKnife.bind(this);
+        dbManagger = DBManagger.getInstance();
     }
 
     @OnClick({R.id.signIn, R.id.signUp})
@@ -55,35 +54,6 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        openDatabases();
-    }
-
-    private void openDatabases() {
-        dbManagger = DBManagger.getInstance();
-        if(dbManagger != null)
-            Log.d(TAG, "Memo database is open.");
-        else
-            Log.d(TAG, "Memo database is not open.");
-    }
-
-//    private View.OnClickListener listener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            switch (v.getId()) {
-//                case R.id.signIn:
-//                    signInWithEmailPassword();
-//                    break;
-//                case R.id.signUp:
-//                    signUpWithEmailPassword();
-//                    break;
-//            }
-//        }
-//    };
 
     // 로그인
     private void signInWithEmailPassword() {
@@ -136,8 +106,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean checkUserWithDB(String email) {
         User user = dbManagger.getUser(email);
 
-        if(user != null)
-            return true;
+        Log.d("checkUserWithDB", user.getEmail());
+        if(user != null) {
+            if(user.getPassword().equals(userPassword.getText().toString().trim()))
+                return true;
+        }
 
         return false;
     }

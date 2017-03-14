@@ -43,6 +43,7 @@ public class ShowMessageActivity extends AppCompatActivity {
 
     private void init() {
         ButterKnife.bind(this);
+        dbManagger = DBManagger.getInstance();
 
         Intent intent = getIntent();
         memoList = (MemoList) intent.getSerializableExtra("memo");
@@ -53,21 +54,6 @@ public class ShowMessageActivity extends AppCompatActivity {
         save.setOnClickListener(listener);
         close.setOnClickListener(listener);
         delete.setOnClickListener(listener);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        openDatabases();
-    }
-
-    private void openDatabases() {
-        dbManagger = DBManagger.getInstance();
-        if(dbManagger != null)
-            Log.d(TAG, "Memo database is open.");
-        else
-            Log.d(TAG, "Memo database is not open.");
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {
