@@ -3,54 +3,78 @@ package com.example.samsung.multimemoapplication.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.samsung.multimemoapplication.R;
+import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
 import com.example.samsung.multimemoapplication.manager.PropertyManager;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Tak on 2017. 2. 22..
  */
 public class SignUpActivity extends AppCompatActivity {
-    private EditText userID;
-    private EditText userPassword;
-    private EditText userName;
-    private Button signUp;
+    private static final String TAG = "SignUpActivity";
+
+    private static MultiMemoDBHelper multiMemoDBHelper;
+
+    @BindView(R.id.userEmail) EditText userEmail;
+    @BindView(R.id.userName) EditText userName;
+    @BindView(R.id.userPassword) EditText userPassword;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_activity);
-
-        userID = (EditText) findViewById(R.id.userID);
-        userPassword = (EditText) findViewById(R.id.userPassword);
-        userName = (EditText) findViewById(R.id.userName);
-        signUp = (Button) findViewById(R.id.signUp);
-
-        signUp.setOnClickListener(listener);
+        
+        init();
     }
 
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            signUpWithEmailPassword();
-        }
-    };
+    private void init() {
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        operDatabases();
+    }
+
+    private void operDatabases() {
+        multiMemoDBHelper = MultiMemoDBHelper.getInstance();
+        if(multiMemoDBHelper != null)
+            Log.d(TAG, "Memo database is open.");
+        else
+            Log.d(TAG, "Memo database is not open.");
+    }
+
+    @OnClick(R.id.signUp)
+    public void onSignUpClicked() {
+        signUpWithEmailPassword();
+    }
 
     private void signUpWithEmailPassword() {
-        String id = userID.getText().toString();
+        String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
         String name = userName.getText().toString();
 
-        if(!validateUserAccount(name, id, password)) {
+        if(!validateUserAccount(name, email, password)) {
             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        PropertyManager.getInstance().setEmail(id);
+        // TODO: use callback
+        multiMemoDBHelper.insertUser(email, password);
+
+        PropertyManager.getInstance().setEmail(email);
         PropertyManager.getInstance().setPassword(password);
 
         Toast.makeText(this, "Sign Up Success", Toast.LENGTH_SHORT).show();
@@ -60,7 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean validateUserAccount(String name, String id, String password) {
+    private boolean validateUserAccount(String name, String email, String password) {
         Boolean valid = true;
 
         if (name.isEmpty() || name.length() < 3) {
@@ -70,11 +94,11 @@ public class SignUpActivity extends AppCompatActivity {
             userName.setError(null);
         }
 
-        if (id.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(id).matches()) {
-            userID.setError("enter a valid email address");
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            userEmail.setError("enter a valid email address");
             valid = false;
         } else {
-            userID.setError(null);
+            userEmail.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
