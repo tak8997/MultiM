@@ -2,7 +2,6 @@ package com.example.samsung.multimemoapplication.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.samsung.multimemoapplication.R;
 import com.example.samsung.multimemoapplication.adapter.MyAdapter;
-import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
+import com.example.samsung.multimemoapplication.manager.DBManagger;
+import com.example.samsung.multimemoapplication.manager.PropertyManager;
 import com.example.samsung.multimemoapplication.model.MemoList;
 
 import java.util.List;
@@ -30,7 +29,7 @@ import butterknife.OnClick;
 public class MultiMemoActivity extends AppCompatActivity {
     public static final String TAG = "MultiMemoActivity";
 
-    public static MultiMemoDBHelper multiMemoDBHelper;
+    public static DBManagger dbManagger;
 
     @BindView(R.id.my_recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -80,8 +79,8 @@ public class MultiMemoActivity extends AppCompatActivity {
     }
 
     private void loadMemoList() {
-        multiMemoDBHelper = MultiMemoDBHelper.getInstance();
-        List<MemoList> memoLists = multiMemoDBHelper.getAllMemoLists();
+        dbManagger = DBManagger.getInstance();
+        List<MemoList> memoLists = dbManagger.getAllMemoLists();
 
         mAdapter = new MyAdapter(memoLists);
         mAdapter.notifyDataSetChanged();
@@ -89,14 +88,16 @@ public class MultiMemoActivity extends AppCompatActivity {
     }
 
     private void openDatabases() {
-        multiMemoDBHelper = MultiMemoDBHelper.getInstance();
-        if(multiMemoDBHelper != null)
+        dbManagger = DBManagger.getInstance();
+        if(dbManagger != null)
             Log.d(TAG, "Memo database is open.");
         else
             Log.d(TAG, "Memo database is not open.");
     }
 
     private void logOut() {
+        PropertyManager.getInstance().userClear();
+
         Intent intent = new Intent(MultiMemoActivity.this, LoginActivity.class);
         startActivity(intent);
     }

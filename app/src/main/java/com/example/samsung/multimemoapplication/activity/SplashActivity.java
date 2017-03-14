@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.samsung.multimemoapplication.R;
-import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
-import com.example.samsung.multimemoapplication.manager.NetworkManager;
+import com.example.samsung.multimemoapplication.manager.DBManagger;
 import com.example.samsung.multimemoapplication.manager.PropertyManager;
 import com.example.samsung.multimemoapplication.model.User;
 
@@ -21,7 +19,7 @@ public class SplashActivity extends AppCompatActivity{
     private static String TAG = "SplashActivity";
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 3000;
-    private static MultiMemoDBHelper multiMemoDBHelper;
+    private static DBManagger dbManagger;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,8 +30,8 @@ public class SplashActivity extends AppCompatActivity{
     }
 
     private void init() {
-        multiMemoDBHelper = MultiMemoDBHelper.getInstance();
-        if(multiMemoDBHelper != null)
+        dbManagger = DBManagger.getInstance();
+        if(dbManagger != null)
             Log.d(TAG, "Memo database is open.");
         else
             Log.d(TAG, "Memo database is not open.");
@@ -52,27 +50,12 @@ public class SplashActivity extends AppCompatActivity{
                 if(!email.equals("")) {
                     final String password = PropertyManager.getInstance().getPassword();
 
-                    User user = multiMemoDBHelper.getUser(email);
+                    User user = dbManagger.getUser(email);
                     if(user != null && password != user.getPassword()) {
                         Intent intent = new Intent(SplashActivity.this, MultiMemoActivity.class);
                         startActivity(intent);
                         finish();
                     }
-//                    PropertyManager.getInstance().getAuthWithIdPassword(email, password, new PropertyManager.OnResultListener<User>() {
-//                        @Override
-//                        public void onSuccess(User result) {
-//                            Toast.makeText(SplashActivity.this, email + ", " + password + "", Toast.LENGTH_SHORT).show();
-//
-//                            Intent intent = new Intent(SplashActivity.this, MultiMemoActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
-//
-//                        @Override
-//                        public void onFail(int code) {
-//                            Log.d(TAG, "Auth Failed");
-//                        }
-//                    });
                 } //로그인 안되어 있을 경우
                 else {
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);

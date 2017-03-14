@@ -1,10 +1,9 @@
-package com.example.samsung.multimemoapplication.database;
+package com.example.samsung.multimemoapplication.manager;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.example.samsung.multimemoapplication.common.MyApplication;
@@ -18,8 +17,8 @@ import java.util.List;
  * Created by SAMSUNG on 2017-01-23.
  */
 
-public final class MultiMemoDBHelper extends SQLiteOpenHelper {
-    public static MultiMemoDBHelper multiMemoDBHelper;
+public final class DBManagger extends SQLiteOpenHelper {
+    public static DBManagger DBManagger;
 
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
@@ -47,14 +46,14 @@ public final class MultiMemoDBHelper extends SQLiteOpenHelper {
     private static final String USER_EMAIL = "email";
     private static final String USER_PASSWORD = "password";
 
-    public static MultiMemoDBHelper getInstance() {
-        if(multiMemoDBHelper == null)
-            multiMemoDBHelper = new MultiMemoDBHelper();
+    public static DBManagger getInstance() {
+        if(DBManagger == null)
+            DBManagger = new DBManagger();
 
-        return multiMemoDBHelper;
+        return DBManagger;
     }
 
-    private MultiMemoDBHelper() {
+    private DBManagger() {
         super(MyApplication.getContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 

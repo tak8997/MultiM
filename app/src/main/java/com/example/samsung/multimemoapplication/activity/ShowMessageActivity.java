@@ -3,13 +3,14 @@ package com.example.samsung.multimemoapplication.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.samsung.multimemoapplication.R;
-import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
+import com.example.samsung.multimemoapplication.manager.DBManagger;
 import com.example.samsung.multimemoapplication.model.MemoList;
 
 import java.util.Date;
@@ -21,6 +22,8 @@ import butterknife.ButterKnife;
  * Created by Tak on 2017. 3. 6..
  */
 public class ShowMessageActivity extends AppCompatActivity {
+    private static final String TAG = "ShowMessageActivity";
+
     @BindView(R.id.inputDate) TextView curDate;
     @BindView(R.id.content) EditText content;
     @BindView(R.id.save) TextView save;
@@ -28,6 +31,7 @@ public class ShowMessageActivity extends AppCompatActivity {
     @BindView(R.id.close) TextView close;
 
     private MemoList memoList;
+    private DBManagger dbManagger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,21 @@ public class ShowMessageActivity extends AppCompatActivity {
         save.setOnClickListener(listener);
         close.setOnClickListener(listener);
         delete.setOnClickListener(listener);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        openDatabases();
+    }
+
+    private void openDatabases() {
+        dbManagger = DBManagger.getInstance();
+        if(dbManagger != null)
+            Log.d(TAG, "Memo database is open.");
+        else
+            Log.d(TAG, "Memo database is not open.");
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {
@@ -73,7 +92,7 @@ public class ShowMessageActivity extends AppCompatActivity {
     }
 
     private void deleteMemo() {
-        MultiMemoDBHelper.getInstance().deleteMemo(memoList);
+        dbManagger.deleteMemo(memoList);
         Toast.makeText(this, "deleteMemo", Toast.LENGTH_SHORT).show();
 
         finish();
@@ -86,7 +105,7 @@ public class ShowMessageActivity extends AppCompatActivity {
         memoList.setCurDate(curDate.toString());
         memoList.setMemo(memoContent);
 
-        MultiMemoDBHelper.getInstance().updateMemo(memoList);
+        dbManagger.updateMemo(memoList);
 
         Toast.makeText(this, "saveMemo", Toast.LENGTH_SHORT).show();
 

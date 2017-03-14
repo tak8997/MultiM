@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.samsung.multimemoapplication.R;
-import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
+import com.example.samsung.multimemoapplication.manager.DBManagger;
 import com.example.samsung.multimemoapplication.model.MemoList;
 
 import java.util.Date;
@@ -56,7 +56,7 @@ public class NewMessageActivity extends AppCompatActivity{
 
                 MemoList memoList = new MemoList(date.toString(), memo);
 
-                MultiMemoDBHelper.getInstance().addMemo(memoList);
+                DBManagger.getInstance().addMemo(memoList);
 
                 Toast.makeText(NewMessageActivity.this, "Success?", Toast.LENGTH_SHORT).show();
                 finish();

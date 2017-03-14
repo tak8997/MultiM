@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.samsung.multimemoapplication.R;
-import com.example.samsung.multimemoapplication.database.MultiMemoDBHelper;
+import com.example.samsung.multimemoapplication.manager.DBManagger;
 import com.example.samsung.multimemoapplication.manager.PropertyManager;
 
 import butterknife.BindView;
@@ -23,7 +21,7 @@ import butterknife.OnClick;
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
 
-    private static MultiMemoDBHelper multiMemoDBHelper;
+    private static DBManagger dbManagger;
 
     @BindView(R.id.userEmail) EditText userEmail;
     @BindView(R.id.userName) EditText userName;
@@ -49,8 +47,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void operDatabases() {
-        multiMemoDBHelper = MultiMemoDBHelper.getInstance();
-        if(multiMemoDBHelper != null)
+        dbManagger = DBManagger.getInstance();
+        if(dbManagger != null)
             Log.d(TAG, "Memo database is open.");
         else
             Log.d(TAG, "Memo database is not open.");
@@ -72,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         // TODO: use callback
-        multiMemoDBHelper.insertUser(email, password);
+        dbManagger.insertUser(email, password);
 
         PropertyManager.getInstance().setEmail(email);
         PropertyManager.getInstance().setPassword(password);

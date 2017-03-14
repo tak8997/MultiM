@@ -59,6 +59,11 @@ public class PropertyManager {
         return mPrefs.getString(USER_PASSWORD, "");
     }
 
+    public void userClear() {
+        mEditor.clear();
+        mEditor.commit();
+    }
+
 //    public void getAuthWithIdPassword(String id, String password, OnResultListener<User> listener) {
 //        setOnResultListener(listener);
 //        getIdPassword(id, password);
