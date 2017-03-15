@@ -4,18 +4,24 @@
     <string name="text_writing">텍스트</string>
     <string name="hand_writing">손글씨</string>
 
+    <string name="facebook_app_id">1833863770189043</string>
+    <string name="fb_login_protocol_scheme">fb1833863770189043</string>
+
     <string name="action_settings">로그아웃</string>
     <string name="action_share">Share</string>
     <string name="action_search">Search</string>
 
     <style name="DefaultButtonText">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#979797</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">3dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <!--<item name="android:gravity">center</item>-->
+        <!--<item name="android:layout_margin">3dp</item>-->
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:shadowColor">#f9f9f9</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>

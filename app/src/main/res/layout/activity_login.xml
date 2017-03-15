@@ -37,13 +37,24 @@
             android:drawableLeft="@drawable/password"/>
         <Button
             android:id="@+id/signIn"
-            android:layout_width="match_parent"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_margin="4dp"
+            android:minHeight="0dp"
             android:text="Sign In"
-            style="@style/DefaultButtonText"
-            android:background="@drawable/button_default_bg" />
+            android:textSize="13dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/button_default_bg"
+            android:layout_gravity="center_horizontal" />
+        <!--style="@style/DefaultButtonText"-->
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
         <TextView
             android:id="@+id/signUp"
             android:layout_width="match_parent"

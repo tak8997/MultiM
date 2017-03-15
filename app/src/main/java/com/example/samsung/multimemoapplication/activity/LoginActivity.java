@@ -12,8 +12,16 @@ import com.example.samsung.multimemoapplication.R;
 import com.example.samsung.multimemoapplication.manager.DBManagger;
 import com.example.samsung.multimemoapplication.manager.PropertyManager;
 import com.example.samsung.multimemoapplication.model.User;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import java.io.File;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,9 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     private static DBManagger dbManagger;
+    private CallbackManager callbackManager;
 
     @BindView(R.id.userEmail) EditText userEmail;
     @BindView(R.id.userPassword) EditText userPassword;
+    @BindView(R.id.login_button) LoginButton loginButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,10 +50,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init() {
         ButterKnife.bind(this);
+
         dbManagger = DBManagger.getInstance();
+        callbackManager = CallbackManager.Factory.create();
     }
 
-    @OnClick({R.id.signIn, R.id.signUp})
+    @OnClick({R.id.signIn, R.id.signUp, R.id.login_button})
     public void onSignClicked(View v) {
         switch (v.getId()) {
             case R.id.signIn:
@@ -52,10 +64,35 @@ public class LoginActivity extends AppCompatActivity {
             case R.id.signUp:
                 signUpWithEmailPassword();
                 break;
+            case R.id.login_button:
+                signInWithFacebook();
+                break;
         }
     }
 
-    // 로그인
+    // 페이스북을 통한 로그인
+    private void signInWithFacebook() {
+        // Callback registration
+        loginButton.setReadPermissions("email");
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d("facebookLogin", loginResult.getAccessToken() + "");
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("facebookError", "cancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.d("facebookError", exception.toString());
+            }
+        });
+    }
+
+    // 이메일, 패스워드 로그인
     private void signInWithEmailPassword() {
         if (!validateUserAccount()) {
             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
@@ -113,6 +150,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
