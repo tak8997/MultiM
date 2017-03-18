@@ -77,17 +77,23 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("facebookLogin", loginResult.getAccessToken() + "");
+                String userFacebookToken = loginResult.getAccessToken().toString();
+
+                PropertyManager.getInstance().setUserFacebookToken(userFacebookToken);
+
+                Intent intent = new Intent(LoginActivity.this, MultiMemoActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
             public void onCancel() {
-                Log.d("facebookError", "cancel");
+
             }
 
             @Override
             public void onError(FacebookException exception) {
-                Log.d("facebookError", exception.toString());
+
             }
         });
     }

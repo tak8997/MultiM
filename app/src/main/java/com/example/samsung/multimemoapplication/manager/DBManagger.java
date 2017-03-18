@@ -45,6 +45,7 @@ public final class DBManagger extends SQLiteOpenHelper {
     // 유저 테이블 컬럼
     private static final String USER_EMAIL = "email";
     private static final String USER_PASSWORD = "password";
+    private static final String USER_TOKEN = "token";
 
     public static DBManagger getInstance() {
         if(DBManagger == null)
@@ -81,7 +82,8 @@ public final class DBManagger extends SQLiteOpenHelper {
                 "CREATE TABLE " + USER_ACCOUNT_TABLE + " (" +
                         USER_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                         USER_EMAIL + " TEXT, " +
-                        USER_PASSWORD + " TEXT " +
+                        USER_PASSWORD + " TEXT, " +
+                        USER_TOKEN + " TEXT " +
                         ")";
         db.execSQL(CREATE_SQL);
         Log.d("table", "User table created");
@@ -207,16 +209,16 @@ public final class DBManagger extends SQLiteOpenHelper {
      */
 
     public void insertUser(String email, String password) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Log.d("insertUser", "success");
+            SQLiteDatabase db = this.getWritableDatabase();
+            Log.d("insertUser", "success");
 
-        ContentValues newValues = new ContentValues();
-        // Assign values for each row.
-        newValues.put(USER_EMAIL, email);
-        newValues.put(USER_PASSWORD,password);
+            ContentValues newValues = new ContentValues();
+            // Assign values for each row.
+            newValues.put(USER_EMAIL, email);
+            newValues.put(USER_PASSWORD, password);
 
-        // Insert the row into your table
-        db.insert(USER_ACCOUNT_TABLE, null, newValues);
+            // Insert the row into your table
+            db.insert(USER_ACCOUNT_TABLE, null, newValues);
     }
 
     public void deleteUser(User user) {
@@ -254,7 +256,7 @@ public final class DBManagger extends SQLiteOpenHelper {
 //        cursor.moveToFirst();
 //        String password= cursor.getString(cursor.getColumnIndex("PASSWORD"));
 //        cursor.close();
-//
+
 //        return password;
     }
 

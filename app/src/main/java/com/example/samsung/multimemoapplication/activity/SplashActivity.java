@@ -49,8 +49,9 @@ public class SplashActivity extends AppCompatActivity{
             @Override
             public void run() {
                 final String email = PropertyManager.getInstance().getEmail();
+                final String facebookToken = PropertyManager.getInstance().getUserFacebookToken();
 
-                //로그인 되어있을 경우
+                //로그인,패스워드를 통해 로그인 되어있을 경우
                 if(!email.equals("")) {
                     final String password = PropertyManager.getInstance().getPassword();
 
@@ -60,7 +61,12 @@ public class SplashActivity extends AppCompatActivity{
                         startActivity(intent);
                         finish();
                     }
-                } //로그인 안되어 있을 경우
+                } //페이스북을 통해 로그인이 있을 경우
+                else if(!facebookToken.equals("")) {
+                    Intent intent = new Intent(SplashActivity.this, MultiMemoActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
                 else {
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
